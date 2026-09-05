@@ -1,1 +1,10 @@
 print("wow that's some explosions")
+function GExSplodeBasic(ent,pos,dmg,radius,attacker) --GEX BLAST!!!
+	local effx = EffectData()
+	effx:SetOrigin(pos)
+	effx:SetMagnitude(30)
+	effx:SetScale(6)
+	effx:SetFlags(0)
+	util.BlastDamage(ent,attacker or ent,pos,radius,dmg)
+	util.Effect("Explosion",effx,true,true)
+end

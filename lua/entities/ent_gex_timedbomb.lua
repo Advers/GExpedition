@@ -1,0 +1,33 @@
+AddCSLuaFile()
+DEFINE_BASECLASS("ent_gex_bombbase")
+ENT.Class = "ent_gex_timedbomb"
+
+ENT.Spawnable = true
+ENT.Model = "models/Combine_Helicopter/helicopter_bomb01.mdl"
+ENT.MaxHealth = 30
+ENT.Name = "Time Bomb"
+
+if not SERVER then return end
+function ENT:Initialize()
+	self.BaseClass.Initialize(self)
+	self:SetColor(Color(255,50,50,255))
+	self:SetSkin(1)
+end
+function ENT:Use()
+	BaseClass.Use(self)
+	if not self.detonateTime then
+		self.alarm = self:StartLoopingSound("ambient/alarms/combine_bank_alarm_loop4.wav")
+		self.detonateTime = CurTime() + 15
+		self:Arm()
+	end
+end
+function ENT:Arm()
+	BaseClass.Arm(self)
+	self:SetSkin(0)
+end
+function ENT:Think()
+	if self.armed and self.detonateTime < CurTime() then
+		self:StopLoopingSound(self.alarm)
+		self:StartDetonate()
+	end
+end
