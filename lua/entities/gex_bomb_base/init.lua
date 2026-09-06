@@ -3,6 +3,8 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
+ENT.ArmingSound = {"weapons/tripwire/hook.wav", 70, 150}
+
 function ENT:Initialize()
 	self:SetMaxHealth(self.MaxHealth)
 	self:SetHealth(self.MaxHealth)
@@ -60,12 +62,17 @@ function ENT:Disarm()
 	self.armed = false
 end
 
-function ENT:Use(activator,proxy)
+function ENT:Use(activator, proxy)
 	if not self.armed and activator:IsWalking() then
 		self:Arm()
-		self:EmitSound("weapons/tripwire/hook.wav",70,150)
+		
+		local ArmingSound = self.ArmingSound
+		if ArmingSound then
+			self:EmitSound(unpack(ArmingSound))
+		end
 	end
-	if self:GetPhysicsObject():GetMass()<=35 and not activator:IsWalking() then--This is how it works in the base game, but I wish it were possible to just. use the base game.
+	
+	if self:GetPhysicsObject():GetMass()<=35 then -- This is how it works in the base game, but I wish it were possible to just. use the base game.
 		if self:IsPlayerHolding() then 
 			self:ForcePlayerDrop()
 		else
