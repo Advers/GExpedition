@@ -19,6 +19,7 @@ function ENT:Initialize()
 		phys:Wake()
 	end
 	self.armed = false
+	self:SetUseType( SIMPLE_USE )
 	
 	if WireLib then
 		self:InitializeWire()
@@ -59,6 +60,20 @@ function ENT:Disarm()
 	self.armed = false
 end
 
+function ENT:Use(activator,proxy)
+	if not self.armed and activator:IsWalking() then
+		self:Arm()
+		self:EmitSound("weapons/tripwire/hook.wav",70,150)
+	end
+	if self:GetPhysicsObject():GetMass()<=35 and not activator:IsWalking() then--This is how it works in the base game, but I wish it were possible to just. use the base game.
+		if self:IsPlayerHolding() then 
+			self:ForcePlayerDrop()
+		else
+			activator:PickupObject( self )
+		end
+	end
+end
+
 function ENT:Detonate()
 	GExSplodeBasic(self,self:GetPos(),100,500)
 	self:Remove()
@@ -79,7 +94,7 @@ end
 function ENT:OnTakeDamage(dmg)
 	self:SetHealth(self:Health()-dmg:GetDamage())
 	if self:GetMaxHealth() ~= 0 and self:Health()<=0 then
-		if self.armed then
+		if self.armed or self.Volatile then
 			self:StartDetonate()
 		else
 			self:Break()

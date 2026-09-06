@@ -10,19 +10,14 @@ ENT.Name = "Time Bomb"
 if not SERVER then return end
 function ENT:Initialize()
 	self.BaseClass.Initialize(self)
+	self:GetPhysicsObject():SetMass(50)
 	self:SetColor(Color(255,50,50,255))
 	self:SetSkin(1)
 end
-function ENT:Use()
-	BaseClass.Use(self)
-	if not self.detonateTime then
-		self.alarm = self:StartLoopingSound("ambient/alarms/combine_bank_alarm_loop4.wav")
-		self.detonateTime = CurTime() + 15
-		self:Arm()
-	end
-end
-function ENT:Arm()
-	BaseClass.Arm(self)
+function ENT:Arm(...)
+	self.BaseClass.Arm(self,...)
+	self.detonateTime = CurTime() + 15
+	self.alarm = self:StartLoopingSound("ambient/alarms/combine_bank_alarm_loop4.wav")
 	self:SetSkin(0)
 end
 function ENT:Think()
