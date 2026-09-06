@@ -23,6 +23,11 @@ function ENT:Arm()
 	self.detonateTime = CurTime() + 6
 end
 
+function ENT:Disarm()
+	self.BaseClass.Disarm(self)
+	self:StopLoopingSound(self.fuseSound)
+end
+
 function ENT:Think()
 	if self.armed and self.detonateTime < CurTime() then
 		self:StopLoopingSound(self.fuseSound)
