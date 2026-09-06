@@ -4,6 +4,7 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 ENT.ArmingSound = {"weapons/tripwire/hook.wav", 70, 150}
+ENT.DisarmingSound = {"weapons/tripwire/hook.wav", 70, 100}
 
 function ENT:Initialize()
 	self:SetMaxHealth(self.MaxHealth)
@@ -63,12 +64,21 @@ function ENT:Disarm()
 end
 
 function ENT:Use(activator, proxy)
-	if not self.armed and activator:IsWalking() then
-		self:Arm()
-		
-		local ArmingSound = self.ArmingSound
-		if ArmingSound then
-			self:EmitSound(unpack(ArmingSound))
+	if activator:IsWalking() then
+		if self.armed then
+			self:Disarm()
+			
+			local DisarmingSound = self.DisarmingSound
+			if DisarmingSound then
+				self:EmitSound(unpack(DisarmingSound))
+			end
+		else
+			self:Arm()
+			
+			local ArmingSound = self.ArmingSound
+			if ArmingSound then
+				self:EmitSound(unpack(ArmingSound))
+			end
 		end
 	end
 	
