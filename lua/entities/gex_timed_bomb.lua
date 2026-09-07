@@ -20,6 +20,14 @@ function ENT:Arm(...)
 	self.alarm = self:StartLoopingSound("ambient/alarms/combine_bank_alarm_loop4.wav")
 	self:SetSkin(0)
 end
+function ENT:Disarm()
+	self.BaseClass.Disarm(self)
+	if self.alarm then 
+		self:StopLoopingSound(self.alarm)
+		self.alarm = nil
+	end
+	self:SetSkin(1)
+end
 function ENT:Think()
 	if self.armed and self.detonateTime < CurTime() then
 		self:StopLoopingSound(self.alarm)

@@ -20,7 +20,15 @@ end
 function ENT:Arm()
 	self.BaseClass.Arm(self)
 	self.fuseSound = self:StartLoopingSound("weapons/flaregun/burn.wav")
-	self.detonateTime = CurTime() + 6
+	self.detonateTime = self.detonateTime or (CurTime() + 6) -- you can pinch out the flame but you CANNOT renew the fuse time
+end
+
+function ENT:Disarm()
+	self.BaseClass.Disarm(self)
+	if self.fuseSound then 
+		self:StopLoopingSound(self.fuseSound)
+		self.fuseSound = nil
+	end
 end
 
 function ENT:Think()
