@@ -3,6 +3,7 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
+ENT.Forward = Vector(1, 0, 0)
 ENT.ArmingSound = {"weapons/tripwire/hook.wav", 70, 150}
 ENT.DisarmingSound = {"weapons/tripwire/hook.wav", 70, 100}
 
@@ -18,7 +19,12 @@ function ENT:Initialize()
 	self:SetSolid(SOLID_VPHYSICS)
 	
 	local phys = self:GetPhysicsObject()
-	if (phys:IsValid()) then
+	if phys:IsValid() then
+		if self.Aerodynamic then
+			self:StartMotionController()
+			self:AddToMotionController(phys)
+		end
+	
 		phys:Wake()
 	end
 	self.armed = false
@@ -101,6 +107,12 @@ function ENT:StartDetonate()
 		self.detonating = true
 		self:Detonate()
 	end
+end
+
+function ENT:PhysicsSimulate(phys, deltaTime)
+	
+	
+	return , vector_origin, SIM_LOCAL_ACCELERATION
 end
 
 function ENT:Break()

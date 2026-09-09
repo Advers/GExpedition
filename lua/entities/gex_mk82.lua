@@ -2,23 +2,20 @@ AddCSLuaFile()
 DEFINE_BASECLASS("gex_bomb_base")
 
 ENT.Spawnable = true
-ENT.Model = "models/Combine_Helicopter/helicopter_bomb01.mdl"
+ENT.Model = "models/props_phx/mk-82.mdl"
 ENT.MaxHealth = 30
 ENT.PrintName = "Time Bomb"
+ENT.Aerodynamic = true
 
 if not SERVER then return end
-function ENT:Initialize()
-	self.BaseClass.Initialize(self)
-	self:GetPhysicsObject():SetMass(50)
-	self:SetColor(Color(255,50,50,255))
-	self:SetSkin(1)
-end
+
 function ENT:Arm(...)
 	self.BaseClass.Arm(self,...)
 	self.detonateTime = CurTime() + 15
 	self.alarm = self:StartLoopingSound("ambient/alarms/combine_bank_alarm_loop4.wav")
 	self:SetSkin(0)
 end
+
 function ENT:Disarm()
 	self.BaseClass.Disarm(self)
 	if self.alarm then 
@@ -27,6 +24,7 @@ function ENT:Disarm()
 	end
 	self:SetSkin(1)
 end
+
 function ENT:Think()
 	if self.armed and self.detonateTime < CurTime() then
 		self:StopLoopingSound(self.alarm)

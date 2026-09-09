@@ -1,11 +1,9 @@
 AddCSLuaFile()
 DEFINE_BASECLASS("gex_bomb_base")
-ENT.Class = "gex_dynamite"
 
 ENT.Spawnable = true
 ENT.Model = "models/props_junk/flare.mdl"
 ENT.MaxHealth = 15
-ENT.Name = "Dynamite"
 ENT.PrintName = "Dynamite"
 ENT.Volatile = true --makes it detonate even if it isn't armed.
 
