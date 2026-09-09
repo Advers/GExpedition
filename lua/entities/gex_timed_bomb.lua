@@ -5,7 +5,7 @@ ENT.Class = "gex_timed_bomb"
 ENT.Spawnable = true
 ENT.Model = "models/Combine_Helicopter/helicopter_bomb01.mdl"
 ENT.MaxHealth = 30
-ENT.Name = "Time Bomb"
+ENT.PrintName = "Time Bomb"
 
 if not SERVER then return end
 function ENT:Initialize()

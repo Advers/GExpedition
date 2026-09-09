@@ -6,5 +6,5 @@ function GExSplodeBasic(ent,pos,dmg,radius,attacker) --GEX BLAST!!!
 	effx:SetScale(6)
 	effx:SetFlags(0)
 	util.BlastDamage(ent,attacker or ent,pos,radius,dmg)
-	util.Effect("Explosion",effx,true,true)
+	util.Effect("gex_explosionflashsmoke",effx,true,true)
 end
