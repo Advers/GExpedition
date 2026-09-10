@@ -110,9 +110,13 @@ function ENT:StartDetonate()
 end
 
 function ENT:PhysicsSimulate(phys, deltaTime)
-	
-	
-	return , vector_origin, SIM_LOCAL_ACCELERATION
+	local vel = phys:GetVelocity()
+	if vel:IsZero() then
+		return nil, nil, SIM_NOTHING
+	else
+		local localVel = phys:WorldToLocalVector(phys:GetVelocity())
+		return self.Forward:Cross(localVel) - phys:GetAngleVelocity(), vector_origin, SIM_LOCAL_ACCELERATION
+	end
 end
 
 function ENT:Break()
