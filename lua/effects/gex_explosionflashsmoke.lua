@@ -78,9 +78,10 @@ function EFFECT:Init( data )
 	end
 	self.sequence = 0
 	self:SetNextClientThink(CurTime() + 0.3)
+	local decal = Material("gex/decals/scorch")
+	util.DecalEx(decal,game.GetWorld(),self.pos,Vector(0,0,1),Color(0,0,0,0),0.3,0.3)
 	emitter:Finish()
 end
-
 function EFFECT:Think()
 	self.sequence = self.sequence + 1
 	if self.sequence > 1 then

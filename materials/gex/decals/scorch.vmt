@@ -1,0 +1,10 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "decals/scorch1"
+	"$decal" 1
+	"$decalscale" 30
+	"$translucent" 1
+	"$vertexcolor" 1
+	"$decalfadeduration" 60
+	"$decalfadetime" 60
+}
