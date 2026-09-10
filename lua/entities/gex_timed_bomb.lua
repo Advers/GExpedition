@@ -19,6 +19,10 @@ function ENT:Arm(...)
 	self.alarm = self:StartLoopingSound("ambient/alarms/combine_bank_alarm_loop4.wav")
 	self:SetSkin(0)
 end
+function ENT:Detonate()
+	GExSplodeBasic(self,self:GetPos(),100,1000)
+	self:Remove()
+end
 function ENT:Disarm()
 	self.BaseClass.Disarm(self)
 	if self.alarm then 
