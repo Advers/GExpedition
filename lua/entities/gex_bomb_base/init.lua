@@ -57,7 +57,9 @@ ENT.Fuses = {
 			self.FuseFunction = fuseTable.FuseFunction
 		end,
 		Defuse = function(fuseTable, self)
-			
+			if self.armed then
+				fuseTable.Disarm(self)
+			end
 		end,
 		Arm = function(self)
 			self.armed = true
