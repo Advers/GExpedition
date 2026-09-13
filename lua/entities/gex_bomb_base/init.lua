@@ -27,6 +27,12 @@ function ENT:Initialize()
 	
 		phys:Wake()
 	end
+	
+	local FuseType = self.FuseType
+	if self.FuseType then
+		self.Fuses[FuseType]:Fuse(self)
+	end
+	
 	self.armed = false
 	self:SetUseType( SIMPLE_USE )
 	
@@ -38,6 +44,35 @@ end
 function ENT:InitializeWire()
 	self.Inputs = WireLib.CreateInputs(self, {"Arm", "Detonate"}, {"Controls whether the explosive is armed", "Immediately detonates the explosive"})
 end
+
+ENT.Fuses = {
+	["Impact"] = { -- requires a specified FuseDirection, even if it's vector_origin
+		Fuse = function(fuseTable, self)
+			if not self.FuseDirection then
+				self.FuseDirection = vector_origin
+			end
+			
+			self.Arm = fuseTable.Arm
+			self.Disarm = fuseTable.Disarm
+			self.FuseFunction = fuseTable.FuseFunction
+		end,
+		Defuse = function(fuseTable, self)
+			
+		end,
+		Arm = function(self)
+			self.armed = true
+			self.PhysicsCollide = self.FuseFunction
+		end,
+		Disarm = function(self)
+			self.armed = false
+			self.PhysicsCollide = nil
+		end,
+		FuseFunction = function(self, colData, collider)
+			local FuseDirection = self.FuseDirection
+			if colData.OurOldVelocity:DistToSqr(colData.TheirOldVelocity) > (collider:GetMass()^2) and (FuseDirection:IsZero() or colData.HitNormal:Dot(collider:LocalToWorldVector(FuseDirection)) >= 0) then
+				self:StartDetonate()
+			end
+		end}}
 
 ENT.WireInputAction = {
 	["Arm"] = function(self, value)

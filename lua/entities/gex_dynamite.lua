@@ -5,7 +5,7 @@ ENT.Spawnable = true
 ENT.Model = "models/props_junk/flare.mdl"
 ENT.MaxHealth = 15
 ENT.PrintName = "Dynamite"
-ENT.Volatile = true --makes it detonate even if it isn't armed.
+ENT.Volatile = true -- makes it detonate if it is broken
 
 if not SERVER then return end
 
