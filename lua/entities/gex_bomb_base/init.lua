@@ -52,8 +52,6 @@ ENT.Fuses = {
 				self.FuseDirection = vector_origin
 			end
 			
-			self.Arm = fuseTable.Arm
-			self.Disarm = fuseTable.Disarm
 			self.FuseFunction = fuseTable.FuseFunction
 		end,
 		Defuse = function(fuseTable, self)
@@ -61,12 +59,10 @@ ENT.Fuses = {
 				fuseTable.Disarm(self)
 			end
 		end,
-		Arm = function(self)
-			self.armed = true
+		Arm = function(fuseTable, self)
 			self.PhysicsCollide = self.FuseFunction
 		end,
-		Disarm = function(self)
-			self.armed = false
+		Disarm = function(fuseTable, self)
 			self.PhysicsCollide = nil
 		end,
 		FuseFunction = function(self, colData, collider)
@@ -100,10 +96,22 @@ end
 
 function ENT:Arm()
 	self.armed = true
+	
+	local FuseType = self.FuseType
+	if self.FuseType then
+		local FuseTable = self.Fuses[FuseType]
+		if FuseTable.Arm then FuseTable:Arm(self) end
+	end
 end
 
 function ENT:Disarm()
 	self.armed = false
+	
+	local FuseType = self.FuseType
+	if self.FuseType then
+		local FuseTable = self.Fuses[FuseType]
+		if FuseTable.Disarm then FuseTable:Disarm(self) end
+	end
 end
 
 function ENT:Use(activator, proxy)
