@@ -70,6 +70,29 @@ ENT.Fuses = {
 			if colData.OurOldVelocity:DistToSqr(colData.TheirOldVelocity) > (collider:GetMass()^2) and (FuseDirection:IsZero() or colData.HitNormal:Dot(collider:LocalToWorldVector(FuseDirection)) >= 0) then
 				self:StartDetonate()
 			end
+		end},
+	["Timed"] = {
+		Fuse = function(fuseTable, self)
+			if not self.FuseArgument then -- use "FuseArgument" so that values from wire inputs aren't overwritten when fuse type is changed
+				self.FuseArgument = 15
+			end
+			
+			self.FuseFunction = fuseTable.FuseFunction
+		end,
+		Defuse = function(fuseTable, self)
+			if self.armed then
+				fuseTable.Disarm(self)
+			end
+		end,
+		Arm = function(fuseTable, self)
+			self.detonateTime = CurTime() + 15
+			self:NextThink(self.detonateTime)
+			self.Think = self.FuseFunction
+		end,
+		FuseFunction = function(self)
+			if self.armed and self.detonateTime <= CurTime() then
+				self:StartDetonate()
+			end
 		end}}
 
 ENT.WireInputAction = {

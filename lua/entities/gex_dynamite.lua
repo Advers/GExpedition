@@ -10,19 +10,20 @@ ENT.Volatile = true -- makes it detonate if it is broken
 if not SERVER then return end
 
 function ENT:Initialize()
-	self.BaseClass.Initialize(self)
+	BaseClass.Initialize(self)
 	self:SetMaterial("models/props_debris/plasterwall039c")
 	self:SetColor(Color(255, 90, 90))
 end
 
 function ENT:Arm()
-	self.BaseClass.Arm(self)
+	BaseClass.Arm(self)
 	self.fuseSound = self:StartLoopingSound("weapons/flaregun/burn.wav")
 	self.detonateTime = self.detonateTime or (CurTime() + 6) -- you can pinch out the flame but you CANNOT renew the fuse time
+	self:NextThink(self.detonateTime)
 end
 
 function ENT:Disarm()
-	self.BaseClass.Disarm(self)
+	BaseClass.Disarm(self)
 	if self.fuseSound then 
 		self:StopLoopingSound(self.fuseSound)
 		self.fuseSound = nil
@@ -30,7 +31,7 @@ function ENT:Disarm()
 end
 
 function ENT:Think()
-	if self.armed and self.detonateTime < CurTime() then
+	if self.armed and self.detonateTime <= CurTime() then
 		self:StopLoopingSound(self.fuseSound)
 		self:StartDetonate()
 	end
