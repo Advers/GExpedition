@@ -36,9 +36,7 @@ function ENT:Initialize()
 	self.armed = false
 	self:SetUseType( SIMPLE_USE )
 	
-	if WireLib then
-		self:InitializeWire()
-	end
+	self:InitializeWire()
 end
 
 function ENT:InitializeWire()
