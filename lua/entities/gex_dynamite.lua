@@ -7,7 +7,7 @@ ENT.MaxHealth = 15
 ENT.PrintName = "Dynamite"
 ENT.Volatile = true -- makes it detonate if it is broken
 
-if not SERVER then return end
+if CLIENT then return end
 
 function ENT:Initialize()
 	BaseClass.Initialize(self)

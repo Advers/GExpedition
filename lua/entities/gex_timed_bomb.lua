@@ -7,7 +7,8 @@ ENT.MaxHealth = 30
 ENT.PrintName = "Time Bomb"
 ENT.FuseType = "Timed"
 
-if not SERVER then return end
+if CLIENT then return end
+
 function ENT:Initialize()
 	BaseClass.Initialize(self)
 	self:GetPhysicsObject():SetMass(50)

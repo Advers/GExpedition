@@ -203,3 +203,7 @@ function ENT:OnTakeDamage(dmg)
 	end
 	return dmg:GetDamage()
 end
+
+function ENT:GetPreferredCarryAngles()
+	return self.CarryAngles
+end

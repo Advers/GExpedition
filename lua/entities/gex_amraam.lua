@@ -6,7 +6,7 @@ ENT.Model = "models/props_phx/amraam.mdl"
 ENT.MaxHealth = 50
 ENT.PrintName = "AIM-120 AMRAAM"
 
-if not SERVER then return end
+if CLIENT then return end
 
 --[[function ENT:InitializeWire()
 	self.Inputs = WireLib.CreateInputs(self, {"Arm", "Detonate", "Launch"}, {"Controls whether the rocket is armed", "Immediately detonates the rocket", "LAUNCH THE MISSILE NOW!!!"})
