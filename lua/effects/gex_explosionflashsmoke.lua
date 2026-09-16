@@ -54,7 +54,7 @@ function EFFECT:Init( data )
 
 		local dir = Vector( math.Rand( -1, 1 ), math.Rand( -1, 1 ), math.Rand( -1, 1 ) ):GetNormalized()
 
-		local particle = emitter:Add( "effects/fire_embers"..math.random(1,3), self.pos )
+		local particle = emitter:Add( "effects/fire_embers"..math.random(3), self.pos )
 		if ( particle ) then
 			
 			local color = HSVToColor( math.Rand(0, 40), math.Rand(0.1, 0.3), 1 )
