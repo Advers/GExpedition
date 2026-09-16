@@ -6,7 +6,7 @@ function EFFECT:Init( data )
 	self.magnitude = data:GetMagnitude()
 	local ent = data:GetEntity()
 
-	sound.Play( "ambient/explosions/explode_4.wav", self.pos, 140, math.random(80,90) )
+	sound.Play( "ambient/explosions/explode_4.wav", self.pos, 140, math.Rand(80, 90) )
 
 	local dlight = DynamicLight( ent:EntIndex() )
 
@@ -29,10 +29,10 @@ function EFFECT:Init( data )
 
 		local particle = emitter:Add( "effects/yellowflare", self.pos )
 		if ( particle ) then
-			local size = math.random(400,1600)
+			local size = math.Rand(400, 1600)
 			particle:SetLifeTime( 0 )
 			particle:SetDieTime( size/1000 )
-			local color = HSVToColor( math.random(0,40), math.random(0.2,0.3), 1 )
+			local color = HSVToColor( math.Rand(0, 40), math.Rand(0.2, 0.3), 1 )
 			particle:SetColor(color.r,color.g,color.b)
 			
 			particle:SetStartSize( size * self.scale / math.sqrt(self.magnitude) )
@@ -42,7 +42,7 @@ function EFFECT:Init( data )
 			particle:SetEndAlpha( 0 )
 			
 			particle:SetVelocity( dir * 600000/size * self.scale )
-			particle:SetRoll(math.random(0,360))
+			particle:SetRoll(math.Rand(0, math.tau))
 			particle:SetRollDelta(math.random(-5,5))
 			particle:SetAirResistance( 70 )
 			particle:SetGravity( Vector( 0, 0, 30 ) )
@@ -57,21 +57,21 @@ function EFFECT:Init( data )
 		local particle = emitter:Add( "effects/fire_embers"..math.random(1,3), self.pos )
 		if ( particle ) then
 			
-			local color = HSVToColor( math.random(0,40), math.random(0.1,0.3), 1 )
+			local color = HSVToColor( math.Rand(0, 40), math.Rand(0.1, 0.3), 1 )
 			particle:SetColor(color.r,color.g,color.b)
 			
 			particle:SetLifeTime( 0 )
-			particle:SetDieTime( math.random(1,2) )
+			particle:SetDieTime( math.Rand(1, 2) )
 			
-			particle:SetStartSize( math.random(100,400) * self.scale / math.sqrt(self.magnitude) )
+			particle:SetStartSize( math.Rand(100, 400) * self.scale / math.sqrt(self.magnitude) )
 			particle:SetEndSize( 0 )
 			
 			particle:SetStartAlpha( 255 )
 			particle:SetEndAlpha( 0 )
 			
-			particle:SetVelocity( dir * math.random(1200,2000) * self.scale )
-			particle:SetRoll(math.random(0,360))
-			particle:SetRollDelta(math.random(-5,5))
+			particle:SetVelocity( dir * math.Rand(1200, 2000) * self.scale )
+			particle:SetRoll(math.Rand(0, math.tau))
+			particle:SetRollDelta(math.Rand(-5, 5))
 			particle:SetAirResistance( 70 )
 			particle:SetGravity( Vector( 0, 0, -300 ) )
 			particle:SetCollide( true )
@@ -93,9 +93,9 @@ function EFFECT:Think()
 			local dir = Vector( math.Rand( -1, 1 ), math.Rand( -1, 1 ), math.Rand( -1, 1 ) ):GetNormalized()
 			local particle = emitter:Add( "particles/smokey", self.pos )
 			if ( particle ) then
-				local size = math.random(200,700)
+				local size = math.Rand(200, 700)
 				particle:SetLifeTime( 0 )
-				particle:SetDieTime( math.random(10,20) )
+				particle:SetDieTime( math.Rand(10, 20) )
 				
 				particle:SetStartSize( 0 )
 				particle:SetEndSize( size * 4 * self.scale / math.sqrt(self.magnitude))
@@ -105,8 +105,8 @@ function EFFECT:Think()
 				
 				particle:SetColor(Color(64,64,64))
 				particle:SetVelocity( dir * 150000/size * self.scale)
-				particle:SetRoll(math.random(0,360))
-				particle:SetRollDelta(math.random(-0.5,0.5))
+				particle:SetRoll(math.Rand(0, math.tau))
+				particle:SetRollDelta(math.Rand(-0.5, 0.5))
 				particle:SetAirResistance( 40 )
 				particle:SetGravity( Vector( 0, 0, -30 ) )
 				particle:SetCollide( true )
