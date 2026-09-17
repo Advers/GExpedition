@@ -29,7 +29,7 @@ function ENT:Initialize()
 	end
 	
 	local FuseType = self.FuseType
-	if self.FuseType then
+	if FuseType then
 		self.Fuses[FuseType]:Fuse(self)
 	end
 	
@@ -40,7 +40,22 @@ function ENT:Initialize()
 end
 
 function ENT:InitializeWire()
-	self.Inputs = WireLib.CreateInputs(self, {"Arm", "Detonate"}, {"Controls whether the explosive is armed", "Immediately detonates the explosive"})
+	local names, descs = {"Arm", "Detonate"}, {"Controls whether the explosive is armed", "Immediately detonates the explosive"}
+
+	local ValidFuses = self.ValidFuses
+	if ValidFuses then
+		table.insert(names, "Fuse Type")
+		local desc = "Sets the type of fuse for the explosive. Fuse types are:"
+		for i, typ in ipairs(ValidFuses) do
+			desc = desc.."\n"..i.." - "..typ
+		end
+		table.insert(descs, desc)
+		
+		table.insert(names, "Fuse Setting")
+		table.insert(descs, "Adjust the behavior of the currrent fuse.")
+	end
+
+	self.Inputs = WireLib.CreateInputs(self, names, descs)
 end
 
 ENT.Fuses = {
@@ -51,11 +66,6 @@ ENT.Fuses = {
 			end
 			
 			self.FuseFunction = fuseTable.FuseFunction
-		end,
-		Defuse = function(fuseTable, self)
-			if self.armed then
-				fuseTable.Disarm(self)
-			end
 		end,
 		Arm = function(fuseTable, self)
 			self.PhysicsCollide = self.FuseFunction
@@ -71,16 +81,11 @@ ENT.Fuses = {
 		end},
 	["Timed"] = {
 		Fuse = function(fuseTable, self)
-			if not self.FuseArgument then -- use "FuseArgument" so that values from wire inputs aren't overwritten when fuse type is changed
-				self.FuseArgument = 15
+			if not self.FuseSetting then -- use "FuseSetting" so that values from wire inputs aren't overwritten when fuse type is changed
+				self.FuseSetting = 15
 			end
 			
 			self.FuseFunction = fuseTable.FuseFunction
-		end,
-		Defuse = function(fuseTable, self)
-			if self.armed then
-				fuseTable.Disarm(self)
-			end
 		end,
 		Arm = function(fuseTable, self)
 			self.detonateTime = CurTime() + 15
@@ -92,6 +97,23 @@ ENT.Fuses = {
 				self:StartDetonate()
 			end
 		end}}
+
+function ENT:ChangeFuseType(newType)
+	local Fuses, oldType = self.Fuses, self.FuseType
+	local oldTypeTable, newTypeTable = self.Fuses[oldType], self.Fuses[newType]
+	
+	if oldTypeTable.Defuse then oldTypeTable:Defuse(self) end
+	if self.armed then
+		oldTypeTable:Disarm(self)
+	end
+	
+	newTypeTable:Fuse(self)
+	if self.armed then
+		newTypeTable:Arm(self)
+	end
+	
+	self.FuseType = newType
+end
 
 ENT.WireInputAction = {
 	["Arm"] = function(self, value)
@@ -109,6 +131,15 @@ ENT.WireInputAction = {
 		if value > 0 then
 			self:StartDetonate()
 		end
+	end,
+	["Fuse Type"] = function(self, value)
+		local newType = self.ValidFuses[value]
+		if newType and newType ~= self.FuseType then
+			self:ChangeFuseType(newType)
+		end
+	end,
+	["Fuse Setting"] = function(self, value)
+		self.FuseSetting = value
 	end}
 
 function ENT:TriggerInput(input, value)
