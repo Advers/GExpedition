@@ -45,7 +45,7 @@ function ENT:InitializeWire()
 	local ValidFuses = self.ValidFuses
 	if ValidFuses then
 		table.insert(names, "Fuse Type")
-		local desc = "Sets the type of fuse for the explosive. Fuse types are:"
+		local desc = "Sets the type of fuse for the explosive. Valid fuse types are:"
 		for i, typ in ipairs(ValidFuses) do
 			desc = desc.."\n"..i.." - "..typ
 		end
