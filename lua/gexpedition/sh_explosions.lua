@@ -1,4 +1,3 @@
-print("wow that's some explosions")
 function GExSplodeBasic(ent,pos,dmg,radius,attacker) --GEX BLAST!!!
 	local effx = EffectData()
 	effx:SetOrigin(pos)
