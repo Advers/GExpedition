@@ -217,7 +217,7 @@ function ENT:PhysicsSimulate(phys, deltaTime)
 end
 
 function ENT:Break()
-	self:GibBreakServer(Vector())
+	self:GibBreakClient(self:GetVelocity())
 	self:Remove()
 end
 
