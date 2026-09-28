@@ -34,6 +34,15 @@ function SWEP:Think()
 end
 function SWEP:PrimaryAttack()
 	self:EmitSound("npc/combine_soldier/zipline"..math.random(2)..".wav",140,150)
+	if CLIENT then
+		local answer = Gex_ToggleInventory()
+		print(answer)
+		if answer then 
+			self:EmitSound("ambient/water/drip"..math.random(4)..".wav",0,50,0.2)
+		else
+			self:EmitSound("ambient/water/rain_drip"..math.random(4)..".wav",0,50,0.3)
+		end
+	end
 end
 function SWEP:SecondaryAttack()
 	
