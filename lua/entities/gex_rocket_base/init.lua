@@ -78,7 +78,6 @@ function ENT:Use(activator, proxy)
 end
 
 function ENT:PhysicsSimulate(phys, deltaTime)
-	print(deltaTime)
 	local vel = phys:GetVelocity()
 	if self.launched and self.BurnTime >= CurTime() then
 		local localVel = phys:WorldToLocalVector(phys:GetVelocity())
