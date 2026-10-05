@@ -11,7 +11,6 @@ if CLIENT then return end
 
 function ENT:Initialize()
 	BaseClass.Initialize(self)
-	self:GetPhysicsObject():SetMass(50)
 end
 
 function ENT:Arm(...)
