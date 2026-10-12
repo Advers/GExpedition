@@ -14,16 +14,28 @@ local function DrawPizzaSlice(roll,offset,length,rolloff)
 	surface.DrawPoly(polygon)
 end
 local placeholder = Material( "vgui/cursors/no" )
+local item = Material( "icon16/bricks.png" )
 local hud = Material( "editor/flatignorez" )
 local menuShown = false
-local count = 13
+local count = 1
 Gex_InventoryOpen = false
 function Gex_OpenInventory()
 	if Gex_InventoryOpen then return end
+	local weapon = LocalPlayer():GetWeapon( "gex_inventory" )
 	Gex_InventoryOpen = true
 	local mouseDelta = {0,0}
 	hook.Add( "HUDPaint", "DrawQuickSelectHUD", function()
 		cam.Start2D()
+		count = 0
+		local icons = {}
+		for key,value in pairs(weapon.gexinventory) do
+			count = count + 1
+			icons[key] = value and item or placeholder
+		end
+		if count == 0 then
+			count = 1
+			icons[1] = placeholder
+		end
 		local mouseAngle = math.atan( mouseDelta[1]/mouseDelta[2] ) + (mouseDelta[2]<0 and math.pi or 0)
 		for i=1,count do
 			local roll = math.pi*i/count*2
@@ -36,7 +48,7 @@ function Gex_OpenInventory()
 			surface.SetMaterial(hud)
 			DrawPizzaSlice(roll,offset,length*(selected and 1.1 or 1),math.pi/count)
 			surface.SetDrawColor( color_white )
-			surface.SetMaterial(placeholder)
+			surface.SetMaterial( icons[i] )
 			local size = ScrH()/2.3/math.sqrt(count)
 			local distance = count > 1 and (offset+length/2.5) or 0
 			surface.DrawTexturedRect( math.sin(roll) * distance + ScrW()/2 - size/2, math.cos(roll) * distance+ScrH()/2 - size/2, size, size )
