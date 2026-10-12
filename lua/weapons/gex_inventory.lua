@@ -33,14 +33,13 @@ function SWEP:Think()
 	self.ViewModelFOV = math.sin(CurTime())*30+40
 end
 function SWEP:PrimaryAttack()
-	self:EmitSound("npc/combine_soldier/zipline"..math.random(2)..".wav",140,150)
 	if CLIENT then
 		local answer = Gex_ToggleInventory()
 		print(answer)
 		if answer then 
-			self:EmitSound("ambient/water/drip"..math.random(4)..".wav",0,50,0.2)
+			self:EmitSound("npc/combine_soldier/zipline_hitground2.wav",0,math.random(70,100),0.2)
 		else
-			self:EmitSound("ambient/water/rain_drip"..math.random(4)..".wav",0,50,0.3)
+			self:EmitSound("npc/combine_soldier/zipline_clip1.wav",0,math.random(70,100),0.1)
 		end
 	end
 end
